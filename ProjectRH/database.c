@@ -4,26 +4,26 @@
 #include <stdbool.h>
 #include "database.h"
 
-typedef struct accomodationDetails {
+typedef struct accommodationDetails {
 	int   propertyID;					// Identification number of the property.
 	char  ownerFirstName[20];			// Owner's first name.
 	char  ownerLastName[20];			// Owner's last name.
 	int   propertyBuildYear;			// Year the property was built.
 	float propertyRentalCost;			// How much to rent the property each month.
 	char  ownerEmail[50];				// Owner's e-mail address.
-	int   accomodationType;				// Which type of accomodation is available. 1 = Single room. 2 = Apartment. 3 = Bungalow. 4 = Two story.
+	int   accommodationType;				// Which type of accommodation is available. 1 = Single room. 2 = Apartment. 3 = Bungalow. 4 = Two story.
 	int   propertyBedroomCount;			// Number of bedrooms in the property.
 	bool  propertyPetsAllowed;			// Are pets allowed in the property? True/False
 	int   propertyAvgStay;				// How long are you staying in the property.
 
-	struct accomodationDetails* NEXT;	// Pointer to next node in the linked list.
-}accomodationDetailsT;
+	struct accommodationDetails* NEXT;	// Pointer to next node in the linked list.
+}accommodationDetailsT;
 
-accomodationDetailsT* headPtr = NULL;
-accomodationDetailsT* current;
-accomodationDetailsT* previous;
+accommodationDetailsT* headPtr = NULL;
+accommodationDetailsT* current;
+accommodationDetailsT* previous;
 
-void accomodationAdd(int editMode) {
+void accommodationAdd(int editMode) {
 	int tempForPets;					// Temporary variable for the boolean variable propertyPetsAllowed.
 	int tempForID;						// Temporary variable for the checking of duplicates.
 	char emailCheckAt[10] = "@";		// Substring for e-mail check. "@"
@@ -33,25 +33,25 @@ void accomodationAdd(int editMode) {
 
 	// Creating and populating the node.
 	if (editMode != 1) {
-		current = (accomodationDetailsT*)malloc(sizeof(accomodationDetailsT) * 1);
+		current = (accommodationDetailsT*)malloc(sizeof(accommodationDetailsT) * 1);
 	}
 	
 	// Unique property ID.
 	if (editMode != 1) {
-		printf("\nPlease enter the details for your new accomodation.\nProperty ID            : ");
+		printf("\nPlease enter the details for your new accommodation.\nProperty ID            : ");
 	}
 	else {
-		printf("\nPlease enter the details to edit the accomodation.\nProperty ID            : ");
+		printf("\nPlease enter the details to edit the accommodation.\nProperty ID            : ");
 	}
 	scanf("%d", &tempForID);
 	
 
 	if (editMode != 1) {
-		accomodationDetailsT* temp = headPtr; // Temporary for the checking of duplicates.
+		accommodationDetailsT* temp = headPtr; // Temporary for the checking of duplicates.
 		while (temp != NULL) {
 			if (temp->propertyID == tempForID) {
 				printf("\nDuplicate detected. Editing instead.");
-				accomodationEdit();
+				accommodationEdit();
 				return;
 			}
 			temp = temp->NEXT;
@@ -65,11 +65,11 @@ void accomodationAdd(int editMode) {
 	scanf("%s", tempForLastName);
 
 	if (editMode != 1) {
-		accomodationDetailsT* temp = headPtr;
+		accommodationDetailsT* temp = headPtr;
 		while (temp != NULL) {
 			if (strcmp(tempForFirstName, temp->ownerFirstName) == 0 && strcmp(tempForLastName, temp->ownerLastName) == 0) {
 				printf("\nDuplicate detected. Editing instead.");
-				accomodationEdit();
+				accommodationEdit();
 				return;
 			}
 			temp = temp->NEXT;
@@ -102,12 +102,12 @@ void accomodationAdd(int editMode) {
 		scanf("%s", current->ownerEmail);
 	}
 
-	// What type of accomodation?
-	printf("\n\033[1;96m1\033[0m: Single room.\n\033[1;96m2\033[0m: Apartment\n\033[1;96m3\033[0m: Bungalow\n\033[1;96m4\033[0m: Two story.\n\nAccomodation type      : ");
-	scanf("%d", &current->accomodationType);
-	while (current->accomodationType != 1 && current->accomodationType != 2 && current->accomodationType != 3 && current->accomodationType != 4) {
-		printf("\n\033[1;96m!\033[0m Invalid selection.\n\n\033[1;96m1\033[0m: Single room.\n\033[1;96m2\033[0m: Apartment\n\033[1;96m3\033[0m: Bungalow\n\033[1;96m4\033[0m: Two story.\n\nAccomodation type      : ");
-		scanf("%d", &current->accomodationType);
+	// What type of accommodation?
+	printf("\n\033[1;96m1\033[0m: Single room.\n\033[1;96m2\033[0m: Apartment\n\033[1;96m3\033[0m: Bungalow\n\033[1;96m4\033[0m: Two story.\n\nAccommodation type      : ");
+	scanf("%d", &current->accommodationType);
+	while (current->accommodationType != 1 && current->accommodationType != 2 && current->accommodationType != 3 && current->accommodationType != 4) {
+		printf("\n\033[1;96m!\033[0m Invalid selection.\n\n\033[1;96m1\033[0m: Single room.\n\033[1;96m2\033[0m: Apartment\n\033[1;96m3\033[0m: Bungalow\n\033[1;96m4\033[0m: Two story.\n\nAccommodation type      : ");
+		scanf("%d", &current->accommodationType);
 	}
 	
 	// How many bedrooms?
@@ -145,14 +145,14 @@ void accomodationAdd(int editMode) {
 		current->NEXT = headPtr;
 		headPtr = current;
 
-		printf("\n\033[1;96mAccomodation added.\033[0m\n");
+		printf("\n\033[1;96mAccommodation added.\033[0m\n");
 	}
 	else {
-		printf("\n\033[1;96mAccomodation edited.\033[0m\n");
+		printf("\n\033[1;96mAccommodation edited.\033[0m\n");
 	}
 }
 
-void accomodationDisplay(int version) {
+void accommodationDisplay(int version) {
 	int searchOption;							// Which search option the user chose. 1 = Owner name, 2 = Property ID.
 	int userInputID = 0;						// User inputted property ID.
 	char userInputFirstName[20] = "Default";	// User inputted first name for the owner.
@@ -161,9 +161,9 @@ void accomodationDisplay(int version) {
 
 	current = headPtr;
 	if (version == 0) { // Display All
-		printf("\n\033[1;96m!\033[0m Displaying all accomodation entries in the database...\n");
+		printf("\n\033[1;96m!\033[0m Displaying all accommodation entries in the database...\n");
 		while (current != NULL) {
-			printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccomodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accomodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+			printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
 
 			current = current->NEXT;
 		}
@@ -203,7 +203,7 @@ void accomodationDisplay(int version) {
 
 			if (matchFound == true) {
 				printf("\n\033[1;96m!\033[0m Match found! Displaying:\n");
-				printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccomodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accomodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+				printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
 				return;
 			}
 			else {
@@ -217,7 +217,7 @@ void accomodationDisplay(int version) {
 	}
 }
 
-void accomodationEdit() {
+void accommodationEdit() {
 	int userInputID;
 	bool matchFound;
 	current = headPtr;
@@ -235,9 +235,9 @@ void accomodationEdit() {
 
 		if (matchFound == true) {
 			printf("\n\033[1;96m!\033[0m Match found! Displaying:\n");
-			printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccomodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accomodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+			printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
 			printf("\n\n\033[1;96m!\033[0m Now entering edit mode.");
-			accomodationAdd(1);
+			accommodationAdd(1);
 			return;
 		}
 		else {
@@ -250,7 +250,7 @@ void accomodationEdit() {
 	}
 }
 
-void accomodationDelete() {
+void accommodationDelete() {
 	int userInputID;
 	bool matchFound;
 	int areYouSure;
@@ -269,7 +269,7 @@ void accomodationDelete() {
 		}
 
 		if (matchFound == true) {
-			printf("\n\033[1;96m!\033[0m Match found!\n\nAre you sure you'd like to remove this accomodation entry? \033[1;96m1\033[0m/\033[1;96m0\033[0m: ");
+			printf("\n\033[1;96m!\033[0m Match found!\n\nAre you sure you'd like to remove this accommodation entry? \033[1;96m1\033[0m/\033[1;96m0\033[0m: ");
 			scanf("%d", &areYouSure);
 
 			if (areYouSure == 1) {
@@ -280,7 +280,7 @@ void accomodationDelete() {
 					previous->NEXT = current->NEXT;
 					free(current);
 				}
-				printf("\n\033[1;96mAccomodation removed.\033[0m\n");
+				printf("\n\033[1;96mAccommodation removed.\033[0m\n");
 			}
 			else {
 				printf("\n\033[1;96m!\033[0m Cancelling...\n");
@@ -299,15 +299,20 @@ void accomodationDelete() {
 	}
 }
 
-void accomodationGenStatistics() {
-	printf("\n\033[1;96mGenerate statistics unimplemented.\033[0m\n");
+void accommodationGenStatistics() {
+	int rentalMax;		// Maximum int to search for.
+	int rentalMin;		// Minimum int to search for.
+
+	printf("Please enter a maximum and a minimum int to generate statistics on.\nMaximum: ");
+	scanf("%d", &rentalMax);
+	printf("\nMinimum: ");
+	scanf("%d", &rentalMin);
 }
 
-void accomodationSaveToFile() {
+void accommodationSaveToFile() {
 	printf("\n\033[1;96mPrint to file unimplemented.\033[0m\n");
 }
 
-void accomodationSortByMonthly() {
+void accommodationSortByMonthly() {
 	printf("\n\033[1;96mBubble sort unimplemented.\033[0m\n");
 }
- 

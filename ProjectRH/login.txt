@@ -1,2 +1,2 @@
-default@xyzaccomodation.com
+default@xyzaccommodation.com
 111111

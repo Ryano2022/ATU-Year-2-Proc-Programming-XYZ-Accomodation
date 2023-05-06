@@ -3,7 +3,7 @@
 #include "options.h"
 
 void main() {
-	printf("\033[1;96mXYZ Accomodation Ltd Database\033[0m\n-----------------------------\n");
+	printf("\033[1;96mXYZ Accommodation Ltd Database\033[0m\n------------------------------\n");
 
 	//login();
 	optionsMenu();

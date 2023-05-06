@@ -1,12 +1,12 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-void accomodationAdd(int editMode);
-void accomodationDisplay(int version);
-void accomodationEdit();
-void accomodationDelete();
-void accomodationGenStatistics();
-void accomodationSaveToFile();
-void accomodationSortByMonthly();
+void accommodationAdd(int editMode);
+void accommodationDisplay(int version);
+void accommodationEdit();
+void accommodationDelete();
+void accommodationGenStatistics();
+void accommodationSaveToFile();
+void accommodationSortByMonthly();
 
 #endif

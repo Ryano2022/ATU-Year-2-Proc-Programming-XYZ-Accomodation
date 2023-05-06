@@ -24,10 +24,10 @@ void login() {
         //printf("%s", passStored);
     }
     else { // Making a default user name and password in a file called login.txt
-        printf("%s not found!\nCreating the file and adding the default username (default@xyzaccomodation.com) and password (111111). ", loginFile);
+        printf("%s not found!\nCreating the file and adding the default username (default@xyzaccommodation.com) and password (111111). ", loginFile);
         fp = fopen(loginFile, "w");
-        fprintf(fp, "default@xyzaccomodation.com\n");
-        strcpy(nameStored, "default@xyzaccomodation.com");
+        fprintf(fp, "default@xyzaccommodation.com\n");
+        strcpy(nameStored, "default@xyzaccommodation.com");
         fprintf(fp, "111111");
         strcpy(passStored, "111111");
         fclose(fp);
@@ -42,7 +42,7 @@ void login() {
             printf("\n");
         }
         else {
-            printf("Username is incorrect or does not exist.\nPlease note that you need to include @xyzaccomodation.com in your username.\n\n");
+            printf("Username is incorrect or does not exist.\nPlease note that you need to include @xyzaccommodation.com in your username.\n\n");
         }
     }
     
