@@ -21,6 +21,7 @@ typedef struct accomodationDetails {
 
 accomodationDetailsT* headPtr = NULL;
 accomodationDetailsT* current;
+accomodationDetailsT* previous;
 
 void accomodationAdd(int editMode) {
 	int tempForPets;					// Temporary variable for the boolean variable propertyPetsAllowed.
@@ -219,6 +220,7 @@ void accomodationDisplay(int version) {
 void accomodationEdit() {
 	int userInputID;
 	bool matchFound;
+	current = headPtr;
 
 	printf("\nPlease enter the property ID number: ");
 	scanf("%d", &userInputID);
@@ -249,7 +251,52 @@ void accomodationEdit() {
 }
 
 void accomodationDelete() {
-	printf("\n\033[1;96mDelete unimplemented.\033[0m\n");
+	int userInputID;
+	bool matchFound;
+	int areYouSure;
+	current = headPtr;
+	previous = NULL;
+
+	printf("\nPlease enter the property ID number: ");
+	scanf("%d", &userInputID);
+
+	while (current != NULL) {
+		if (current->propertyID == userInputID) {
+			matchFound = true;
+		}
+		else {
+			matchFound = false;
+		}
+
+		if (matchFound == true) {
+			printf("\n\033[1;96m!\033[0m Match found!\n\nAre you sure you'd like to remove this accomodation entry? \033[1;96m1\033[0m/\033[1;96m0\033[0m: ");
+			scanf("%d", &areYouSure);
+
+			if (areYouSure == 1) {
+				if (current = headPtr) {
+					headPtr = current->NEXT;
+				}
+				else {
+					previous->NEXT = current->NEXT;
+					free(current);
+				}
+				printf("\n\033[1;96mAccomodation removed.\033[0m\n");
+			}
+			else {
+				printf("\n\033[1;96m!\033[0m Cancelling...\n");
+			}
+			return;
+		}
+		else {
+			printf("\nNo match, next.");
+			if (current->NEXT == NULL) {
+				printf("No matches in the database.\n");
+			}
+		}
+		previous = current;
+		current = current->NEXT;
+
+	}
 }
 
 void accomodationGenStatistics() {
