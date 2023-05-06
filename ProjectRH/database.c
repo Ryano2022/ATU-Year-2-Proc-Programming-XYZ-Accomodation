@@ -22,36 +22,60 @@ typedef struct accomodationDetails {
 accomodationDetailsT* headPtr = NULL;
 accomodationDetailsT* current;
 
-void accomodationAdd() {
+void accomodationAdd(int editMode) {
 	int tempForPets;					// Temporary variable for the boolean variable propertyPetsAllowed.
 	int tempForID;						// Temporary variable for the checking of duplicates.
 	char emailCheckAt[10] = "@";		// Substring for e-mail check. "@"
 	char emailCheckCom[10] = ".com";	// Substring for e-mail check. ".com"
+	char tempForFirstName[20];			// Temporary variable for the checking of duplicates.
+	char tempForLastName[20];			// Temporary variable for the checking of duplicates.
 
 	// Creating and populating the node.
-	current = (accomodationDetailsT*)malloc(sizeof(accomodationDetailsT) * 1);
+	if (editMode != 1) {
+		current = (accomodationDetailsT*)malloc(sizeof(accomodationDetailsT) * 1);
+	}
 	
 	// Unique property ID.
-	printf("\nPlease enter the details for your new accomodation.\nProperty ID            : ");
+	if (editMode != 1) {
+		printf("\nPlease enter the details for your new accomodation.\nProperty ID            : ");
+	}
+	else {
+		printf("\nPlease enter the details to edit the accomodation.\nProperty ID            : ");
+	}
 	scanf("%d", &tempForID);
 	
-	accomodationDetailsT* temp = headPtr;
-	while (temp != NULL) {
-		if (temp->propertyID == tempForID) {
-			printf("Duplicate detected. Editing instead.");
-			accomodationEdit();
-			return;
-		}
-		temp = temp->NEXT;
-	}
 
+	if (editMode != 1) {
+		accomodationDetailsT* temp = headPtr; // Temporary for the checking of duplicates.
+		while (temp != NULL) {
+			if (temp->propertyID == tempForID) {
+				printf("\nDuplicate detected. Editing instead.");
+				accomodationEdit();
+				return;
+			}
+			temp = temp->NEXT;
+		}
+	}
 	current->propertyID = tempForID;
 
-	
 	// Owner's full name.
 	printf("Owner full name        : ");
-	scanf("%s", current->ownerFirstName);
-	scanf("%s", current->ownerLastName);
+	scanf("%s", tempForFirstName);
+	scanf("%s", tempForLastName);
+
+	if (editMode != 1) {
+		accomodationDetailsT* temp = headPtr;
+		while (temp != NULL) {
+			if (strcmp(tempForFirstName, temp->ownerFirstName) == 0 && strcmp(tempForLastName, temp->ownerLastName) == 0) {
+				printf("\nDuplicate detected. Editing instead.");
+				accomodationEdit();
+				return;
+			}
+			temp = temp->NEXT;
+		}
+	}
+	strcpy(current->ownerFirstName, tempForFirstName);
+	strcpy(current->ownerLastName, tempForLastName);
 	
 	// Year the property was built. Must be greater than or equal to 0.
 	printf("Year property was built: ");
@@ -77,7 +101,6 @@ void accomodationAdd() {
 		scanf("%s", current->ownerEmail);
 	}
 
-	
 	// What type of accomodation?
 	printf("\n\033[1;96m1\033[0m: Single room.\n\033[1;96m2\033[0m: Apartment\n\033[1;96m3\033[0m: Bungalow\n\033[1;96m4\033[0m: Two story.\n\nAccomodation type      : ");
 	scanf("%d", &current->accomodationType);
@@ -117,30 +140,112 @@ void accomodationAdd() {
 	}
 
 	// Connecting the node to the list.
-	current->NEXT = headPtr;
-	headPtr = current;
+	if (editMode != 1) {
+		current->NEXT = headPtr;
+		headPtr = current;
 
-	printf("\n\033[1;96mAccomodation added.\033[0m\n");
+		printf("\n\033[1;96mAccomodation added.\033[0m\n");
+	}
+	else {
+		printf("\n\033[1;96mAccomodation edited.\033[0m\n");
+	}
 }
 
 void accomodationDisplay(int version) {
+	int searchOption;							// Which search option the user chose. 1 = Owner name, 2 = Property ID.
+	int userInputID = 0;						// User inputted property ID.
+	char userInputFirstName[20] = "Default";	// User inputted first name for the owner.
+	char userInputLastName[20] = "Default";		// User inputted last name for the owner.
+	bool matchFound;							// Match found in the linked list?
+
+	current = headPtr;
 	if (version == 0) { // Display All
-		current = headPtr;
 		printf("\n\033[1;96m!\033[0m Displaying all accomodation entries in the database...\n");
 		while (current != NULL) {
-			printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccomodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accomodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+			printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccomodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accomodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
 
 			current = current->NEXT;
 		}
 		printf("\n");
 	}
 	else { // Display One
-		printf("\n\033[1;96mDisplay one unimplemented.\033[0m\n");
+		printf("\nSearch by name [\033[1;96m1\033[0m] or by property ID [\033[1;96m2\033[0m]? ");
+		scanf("%d", &searchOption);
+		while (searchOption != 1 && searchOption != 2) {
+			printf("\n\033[1;96m!\033[0m Invalid selection.\n");
+
+			printf("\nSearch by name [\033[1;96m1\033[0m] or by property ID [\033[1;96m2\033[0m]? ");
+			scanf("%d", &searchOption);
+		}
+
+		printf("\nSearch: ");
+		if (searchOption == 1) {
+			scanf("%s", userInputFirstName);
+			scanf("%s", userInputLastName);
+		}
+		else if (searchOption == 2) {
+			scanf("%d", &userInputID);
+		}
+
+		printf("\nSearching...\n");
+
+		while (current != NULL) {
+			if (strcmp(userInputFirstName, current->ownerFirstName) == 0 && strcmp(userInputLastName, current->ownerLastName) == 0) {
+				matchFound = true;
+			}
+			else if (current->propertyID == userInputID) {
+				matchFound = true;
+			}
+			else {
+				matchFound = false;
+			}
+
+			if (matchFound == true) {
+				printf("\n\033[1;96m!\033[0m Match found! Displaying:\n");
+				printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccomodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accomodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+				return;
+			}
+			else {
+				printf("\nNo match, next.");
+				if (current->NEXT == NULL) {
+					printf("No matches in the database.\n");
+				}
+			}
+			current = current->NEXT;
+		}
 	}
 }
 
 void accomodationEdit() {
-	printf("\n\033[1;96mEdit unimplemented.\033[0m\n");
+	int userInputID;
+	bool matchFound;
+
+	printf("\nPlease enter the property ID number: ");
+	scanf("%d", &userInputID);
+	
+	while (current != NULL) {
+		if (current->propertyID == userInputID) {
+			matchFound = true;
+		}
+		else {
+			matchFound = false;
+		}
+
+		if (matchFound == true) {
+			printf("\n\033[1;96m!\033[0m Match found! Displaying:\n");
+			printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccomodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accomodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+			printf("\n\n\033[1;96m!\033[0m Now entering edit mode.");
+			accomodationAdd(1);
+			return;
+		}
+		else {
+			printf("\nNo match, next.");
+			if (current->NEXT == NULL) {
+				printf("No matches in the database.\n");
+			}
+		}
+		current = current->NEXT;
+	}
 }
 
 void accomodationDelete() {

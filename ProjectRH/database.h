@@ -1,7 +1,7 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-void accomodationAdd();
+void accomodationAdd(int editMode);
 void accomodationDisplay(int version);
 void accomodationEdit();
 void accomodationDelete();
