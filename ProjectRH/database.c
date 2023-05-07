@@ -11,7 +11,7 @@ typedef struct accommodationDetails {
 	int   propertyBuildYear;			// Year the property was built.
 	float propertyRentalCost;			// How much to rent the property each month.
 	char  ownerEmail[50];				// Owner's e-mail address.
-	int   accommodationType;				// Which type of accommodation is available. 1 = Single room. 2 = Apartment. 3 = Bungalow. 4 = Two story.
+	int   accommodationType;			// Which type of accommodation is available. 1 = Single room. 2 = Apartment. 3 = Bungalow. 4 = Two story.
 	int   propertyBedroomCount;			// Number of bedrooms in the property.
 	bool  propertyPetsAllowed;			// Are pets allowed in the property? True/False
 	int   propertyAvgStay;				// How long are you staying in the property.
@@ -159,42 +159,83 @@ void accommodationDisplay(int version) {
 	char userInputLastName[20] = "Default";		// User inputted last name for the owner.
 	bool matchFound;							// Match found in the linked list?
 
-	current = headPtr;
-	if (version == 0) { // Display All
-		printf("\n\033[1;96m!\033[0m Displaying all accommodation entries in the database...\n");
-		while (current != NULL) {
-			printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
-
-			current = current->NEXT;
-		}
-		printf("\n");
+	if (headPtr == NULL) {
+		printf("\n\033[1;96m!\033[0m List is empty!\n");
 	}
-	else { // Display One
-		printf("\nSearch by name [\033[1;96m1\033[0m] or by property ID [\033[1;96m2\033[0m]? ");
-		scanf("%d", &searchOption);
-		while (searchOption != 1 && searchOption != 2) {
-			printf("\n\033[1;96m!\033[0m Invalid selection.\n");
+	else {
+		current = headPtr;
+		if (version == 0) { // Display All
+			printf("\n\033[1;96m!\033[0m Displaying all accommodation entries in the database...\n");
+			while (current != NULL) {
+				printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
 
+				current = current->NEXT;
+			}
+			printf("\n");
+		}
+		else { // Display One
 			printf("\nSearch by name [\033[1;96m1\033[0m] or by property ID [\033[1;96m2\033[0m]? ");
 			scanf("%d", &searchOption);
-		}
+			while (searchOption != 1 && searchOption != 2) {
+				printf("\n\033[1;96m!\033[0m Invalid selection.\n");
 
-		printf("\nSearch: ");
-		if (searchOption == 1) {
-			scanf("%s", userInputFirstName);
-			scanf("%s", userInputLastName);
-		}
-		else if (searchOption == 2) {
-			scanf("%d", &userInputID);
-		}
-
-		printf("\nSearching...\n");
-
-		while (current != NULL) {
-			if (strcmp(userInputFirstName, current->ownerFirstName) == 0 && strcmp(userInputLastName, current->ownerLastName) == 0) {
-				matchFound = true;
+				printf("\nSearch by name [\033[1;96m1\033[0m] or by property ID [\033[1;96m2\033[0m]? ");
+				scanf("%d", &searchOption);
 			}
-			else if (current->propertyID == userInputID) {
+
+			printf("\nSearch: ");
+			if (searchOption == 1) {
+				scanf("%s", userInputFirstName);
+				scanf("%s", userInputLastName);
+			}
+			else if (searchOption == 2) {
+				scanf("%d", &userInputID);
+			}
+
+			printf("\nSearching...\n");
+
+			while (current != NULL) { // Looping through to look for the owner name or property ID.
+				if (strcmp(userInputFirstName, current->ownerFirstName) == 0 && strcmp(userInputLastName, current->ownerLastName) == 0) {
+					matchFound = true;
+				}
+				else if (current->propertyID == userInputID) {
+					matchFound = true;
+				}
+				else {
+					matchFound = false;
+				}
+
+				if (matchFound == true) {
+					printf("\n\033[1;96m!\033[0m Match found! Displaying:\n");
+					printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+					return;
+				}
+				else {
+					printf("\nNo match, next.");
+					if (current->NEXT == NULL) {
+						printf("No matches in the database.\n");
+					}
+				}
+				current = current->NEXT;
+			}
+		}
+	}
+}
+
+void accommodationEdit() {
+	int userInputID;
+	bool matchFound;
+	
+	if (headPtr == NULL) {
+		printf("\n\033[1;96m!\033[0m List is empty!\n");
+	}
+	else {
+		current = headPtr;
+		printf("\nPlease enter the property ID number: ");
+		scanf("%d", &userInputID);
+
+		while (current != NULL) { // Looping through to look for the property ID.
+			if (current->propertyID == userInputID) {
 				matchFound = true;
 			}
 			else {
@@ -204,6 +245,8 @@ void accommodationDisplay(int version) {
 			if (matchFound == true) {
 				printf("\n\033[1;96m!\033[0m Match found! Displaying:\n");
 				printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+				printf("\n\n\033[1;96m!\033[0m Now entering edit mode.");
+				accommodationAdd(1);
 				return;
 			}
 			else {
@@ -217,39 +260,6 @@ void accommodationDisplay(int version) {
 	}
 }
 
-void accommodationEdit() {
-	int userInputID;
-	bool matchFound;
-	current = headPtr;
-
-	printf("\nPlease enter the property ID number: ");
-	scanf("%d", &userInputID);
-	
-	while (current != NULL) {
-		if (current->propertyID == userInputID) {
-			matchFound = true;
-		}
-		else {
-			matchFound = false;
-		}
-
-		if (matchFound == true) {
-			printf("\n\033[1;96m!\033[0m Match found! Displaying:\n");
-			printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
-			printf("\n\n\033[1;96m!\033[0m Now entering edit mode.");
-			accommodationAdd(1);
-			return;
-		}
-		else {
-			printf("\nNo match, next.");
-			if (current->NEXT == NULL) {
-				printf("No matches in the database.\n");
-			}
-		}
-		current = current->NEXT;
-	}
-}
-
 void accommodationDelete() {
 	int userInputID;
 	bool matchFound;
@@ -257,56 +267,134 @@ void accommodationDelete() {
 	current = headPtr;
 	previous = NULL;
 
-	printf("\nPlease enter the property ID number: ");
-	scanf("%d", &userInputID);
+	if (headPtr == NULL) {
+		printf("\n\033[1;96m!\033[0m List is empty!\n");
+	}
+	else {
+		printf("\nPlease enter the property ID number: ");
+		scanf("%d", &userInputID);
 
-	while (current != NULL) {
-		if (current->propertyID == userInputID) {
-			matchFound = true;
-		}
-		else {
-			matchFound = false;
-		}
-
-		if (matchFound == true) {
-			printf("\n\033[1;96m!\033[0m Match found!\n\nAre you sure you'd like to remove this accommodation entry? \033[1;96m1\033[0m/\033[1;96m0\033[0m: ");
-			scanf("%d", &areYouSure);
-
-			if (areYouSure == 1) {
-				if (current = headPtr) {
-					headPtr = current->NEXT;
-				}
-				else {
-					previous->NEXT = current->NEXT;
-					free(current);
-				}
-				printf("\n\033[1;96mAccommodation removed.\033[0m\n");
+		while (current != NULL) { // Looping through to look for the property ID.
+			if (current->propertyID == userInputID) {
+				matchFound = true;
 			}
 			else {
-				printf("\n\033[1;96m!\033[0m Cancelling...\n");
+				matchFound = false;
 			}
-			return;
-		}
-		else {
-			printf("\nNo match, next.");
-			if (current->NEXT == NULL) {
-				printf("No matches in the database.\n");
-			}
-		}
-		previous = current;
-		current = current->NEXT;
 
+			if (matchFound == true) {
+				printf("\n\033[1;96m!\033[0m Match found!\n\nAre you sure you'd like to remove this accommodation entry? \033[1;96m1\033[0m/\033[1;96m0\033[0m: ");
+				scanf("%d", &areYouSure);
+
+				if (areYouSure == 1) { // Confirmation.
+					if (current = headPtr) {
+						headPtr = current->NEXT;
+					}
+					else {
+						previous->NEXT = current->NEXT;
+						free(current);
+					}
+					printf("\n\033[1;96mAccommodation removed.\033[0m\n");
+				}
+				else {
+					printf("\n\033[1;96m!\033[0m Cancelling...\n");
+				}
+				return;
+			}
+			else {
+				printf("\nNo match, next.");
+				if (current->NEXT == NULL) {
+					printf("No matches in the database.\n");
+				}
+			}
+			previous = current;
+			current = current->NEXT;
+		}
 	}
 }
 
 void accommodationGenStatistics() {
-	int rentalMax;		// Maximum int to search for.
-	int rentalMin;		// Minimum int to search for.
+	int rentalMax;					// Maximum int to search for.
+	int rentalMin;					// Minimum int to search for.
+	int countSingleRoom = 0;		// Counting the number of single rooms.
+	int countApartment = 0;			// Counting the number of apartments.
+	int countBungalow = 0;			// Counting the number of bungalows.
+	int countTwoStory = 0;			// Counting the number of two stories.
+	int countAccommodations = 0;	// Total number of accommodation entries.
+	float percentSingleRoom;		// Percentage of single rooms in the database.
+	float percentApartment;			// Percentage of single rooms in the database.
+	float percentBungalow;			// Percentage of single rooms in the database.
+	float percentTwoStory;			// Percentage of single rooms in the database.
+	int maxOrMin;
 
-	printf("Please enter a maximum and a minimum int to generate statistics on.\nMaximum: ");
-	scanf("%d", &rentalMax);
-	printf("\nMinimum: ");
-	scanf("%d", &rentalMin);
+	if (headPtr == NULL) {
+		printf("\n\033[1;96m!\033[0m List is empty!\n");
+	}
+	else {
+		printf("\nPlease enter a maximum and a minimum int to generate statistics on.\nMaximum: ");
+		scanf("%d", &rentalMax);
+		while (!(rentalMax > 0)) {
+			printf("\n\033[1;96m!\033[0m Must be greater than 0.\n");
+
+			printf("\nMaximum: ");
+			scanf("%d", &rentalMax);
+		}
+
+		printf("Minimum: ");
+		scanf("%d", &rentalMin);
+		while (!(rentalMin > 0)) {
+			printf("\n\033[1;96m!\033[0m Must be greater than 0.\n");
+
+			printf("\nMinimum: ");
+			scanf("%d", &rentalMin);
+		}
+
+		while (rentalMin > rentalMax) {
+			printf("\n\nMinimum cannot be greater than maximum.\nWhich would you like to change?\n\n\033[1;96m1\033[0m: Maximum\n\033[1;96m2\033[0m: Minimum");
+			scanf("%d", &maxOrMin);
+
+			if (maxOrMin == 1) { // Max selected.
+				printf("\nMaximum: ");
+				scanf("%d", &rentalMax);
+			}
+			else if (maxOrMin == 2) { // Min selected.
+				printf("\nMinimum: ");
+				scanf("%d", &rentalMin);
+			}
+			else {
+				printf("\n\033[1;96m!\033[0m Invalid selection.\n");
+			}
+		}
+
+		current = headPtr;
+		while (current != NULL) {
+			// As long as it's between the two values it should pass.
+			if (current->propertyRentalCost >= rentalMin && current->propertyRentalCost <= rentalMax) {
+				if (current->accommodationType == 1) {
+					++countSingleRoom;
+				}
+				else if (current->accommodationType == 2) {
+					++countApartment;
+				}
+				else if (current->accommodationType == 3) {
+					++countBungalow;
+				}
+				else if (current->accommodationType == 4) {
+					++countTwoStory;
+				}
+			}
+			++countAccommodations;
+			current = current->NEXT;
+		}
+
+		// Now to actually get the statistics.
+		percentSingleRoom = ((float)countSingleRoom / countAccommodations) * 100;
+		percentApartment = ((float)countApartment / countAccommodations) * 100;
+		percentBungalow = ((float)countBungalow / countAccommodations) * 100;
+		percentTwoStory = ((float)countTwoStory / countAccommodations) * 100;
+
+		printf("\n\nSingle Room Percentage: %.2f%%\nApartment Percentage  : %.2f%%\nBungalow Percentage   : %.2f%%\nTwo Story Percentage  : %.2f%%\n\n", percentSingleRoom, percentApartment, percentBungalow, percentTwoStory);
+	}
 }
 
 void accommodationSaveToFile() {
