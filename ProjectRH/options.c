@@ -16,10 +16,10 @@ void optionsMenu() {
 			accommodationAdd(0);
 		}
 		else if (userInput == 2) { // Display All
-			accommodationDisplay(0);
+			accommodationDisplay(0, 0);
 		}
 		else if (userInput == 3) { // Display One
-			accommodationDisplay(1);
+			accommodationDisplay(1, 0);
 		}
 		else if (userInput == 4) { // Edit
 			accommodationEdit();
@@ -28,7 +28,7 @@ void optionsMenu() {
 			accommodationDelete();
 		}
 		else if (userInput == 6) { // Generate Statistics
-			accommodationGenStatistics();
+			accommodationGenStatistics(0);
 		}
 		else if (userInput == 7) { // Print to File
 			accommodationSaveToFile();

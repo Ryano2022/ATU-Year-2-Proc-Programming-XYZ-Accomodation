@@ -31,7 +31,7 @@ void login() {
         fprintf(fp, "111111");
         strcpy(passStored, "111111");
         fclose(fp);
-        printf("\nFile created.\n\n");
+        printf("\n\033[1;96m!\033[0m File created.\n\n");
     }
     
     while (strcmp(nameGuess, nameStored) != 0) { // Checking to make sure the names match.
@@ -42,7 +42,7 @@ void login() {
             printf("\n");
         }
         else {
-            printf("Username is incorrect or does not exist.\nPlease note that you need to include @xyzaccommodation.com in your username.\n\n");
+            printf("\033[1;96m!\033[0m Username is incorrect or does not exist.\nPlease note that you need to include @xyzaccommodation.com in your username.\n\n");
         }
     }
     

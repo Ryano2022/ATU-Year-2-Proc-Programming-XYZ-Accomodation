@@ -2,10 +2,10 @@
 #define DATABASE_H
 
 void accommodationAdd(int editMode);
-void accommodationDisplay(int version);
+void accommodationDisplay(int version, int saveMode);
 void accommodationEdit();
 void accommodationDelete();
-void accommodationGenStatistics();
+void accommodationGenStatistics(int saveMode);
 void accommodationSaveToFile();
 void accommodationSortByMonthly();
 

@@ -23,6 +23,9 @@ accommodationDetailsT* headPtr = NULL;
 accommodationDetailsT* current;
 accommodationDetailsT* previous;
 
+FILE* fp;									// File pointer.
+char outputFile[20] = "savedDatabase.txt";	// Name of file to be outputted to.
+
 void accommodationAdd(int editMode) {
 	int tempForPets;					// Temporary variable for the boolean variable propertyPetsAllowed.
 	int tempForID;						// Temporary variable for the checking of duplicates.
@@ -152,7 +155,7 @@ void accommodationAdd(int editMode) {
 	}
 }
 
-void accommodationDisplay(int version) {
+void accommodationDisplay(int version, int saveMode) {
 	int searchOption;							// Which search option the user chose. 1 = Owner name, 2 = Property ID.
 	int userInputID = 0;						// User inputted property ID.
 	char userInputFirstName[20] = "Default";	// User inputted first name for the owner.
@@ -165,13 +168,30 @@ void accommodationDisplay(int version) {
 	else {
 		current = headPtr;
 		if (version == 0) { // Display All
-			printf("\n\033[1;96m!\033[0m Displaying all accommodation entries in the database...\n");
-			while (current != NULL) {
-				printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+			if (saveMode != 1) {
+				printf("\n\033[1;96m!\033[0m Displaying all accommodation entries in the database...\n");
+				while (current != NULL) {
+					printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
 
-				current = current->NEXT;
+					current = current->NEXT;
+				}
+				printf("\n");
 			}
-			printf("\n");
+			else {
+				while (current != NULL) {
+					fp = fopen(outputFile, "w");
+					if (fp != NULL) {
+						fprintf(fp, "%d %s %s %d %f %s %d %d %d %d\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+						fclose(fp);
+					}
+					else {
+						printf("\n\033[1;96m!\033[0m %s not found. No previously saved databases exist?\n", outputFile);
+						fclose(fp);
+					}
+					current = current->NEXT;
+				}
+				printf("\n");
+			}
 		}
 		else { // Display One
 			printf("\nSearch by name [\033[1;96m1\033[0m] or by property ID [\033[1;96m2\033[0m]? ");
@@ -313,7 +333,7 @@ void accommodationDelete() {
 	}
 }
 
-void accommodationGenStatistics() {
+void accommodationGenStatistics(int saveMode) {
 	int rentalMax;					// Maximum int to search for.
 	int rentalMin;					// Minimum int to search for.
 	int countSingleRoom = 0;		// Counting the number of single rooms.
@@ -393,12 +413,27 @@ void accommodationGenStatistics() {
 		percentBungalow = ((float)countBungalow / countAccommodations) * 100;
 		percentTwoStory = ((float)countTwoStory / countAccommodations) * 100;
 
-		printf("\n\nSingle Room Percentage: %.2f%%\nApartment Percentage  : %.2f%%\nBungalow Percentage   : %.2f%%\nTwo Story Percentage  : %.2f%%\n\n", percentSingleRoom, percentApartment, percentBungalow, percentTwoStory);
+		if (saveMode != 1) {
+			printf("\nSingle Room Percentage: %.2f%%\nApartment Percentage  : %.2f%%\nBungalow Percentage   : %.2f%%\nTwo Story Percentage  : %.2f%%\n\n", percentSingleRoom, percentApartment, percentBungalow, percentTwoStory);
+		}
+		else {
+			fp = fopen(outputFile, "a");
+			if (fp != NULL) {
+				fprintf(fp, "%f %f %f %f\n", percentSingleRoom, percentApartment, percentBungalow, percentTwoStory);
+				fclose(fp);
+			}
+			else {
+				printf("\n\033[1;96m!\033[0m %s not found. No previously saved databases exist?\n", outputFile);
+				fclose(fp);
+			}
+		}
 	}
 }
 
 void accommodationSaveToFile() {
-	printf("\n\033[1;96mPrint to file unimplemented.\033[0m\n");
+	accommodationDisplay(0, 1);
+	printf("\033[1;96m!\033[0m Statistics must be generated for the report file.\n\n");
+	accommodationGenStatistics(1);
 }
 
 void accommodationSortByMonthly() {
