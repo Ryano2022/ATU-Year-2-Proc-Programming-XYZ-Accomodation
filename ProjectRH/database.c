@@ -171,7 +171,7 @@ void accommodationDisplay(int version, int saveMode) {
 			if (saveMode != 1) {
 				printf("\n\033[1;96m!\033[0m Displaying all accommodation entries in the database...\n");
 				while (current != NULL) {
-					printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+					printf("\nProperty ID       : %d\nOwner Name        : %s %s\nYear Built        : %d\nMonthly Rental    : %.2f\nOwner E-Mail      : %s\nAccommodation Type: %d\nBedroom Count     : %d\nPets Allowed?     : %d\nAvg Stay          : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
 
 					current = current->NEXT;
 				}
@@ -227,7 +227,7 @@ void accommodationDisplay(int version, int saveMode) {
 
 				if (matchFound == true) {
 					printf("\n\033[1;96m!\033[0m Match found! Displaying:\n");
-					printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+					printf("\nProperty ID       : %d\nOwner Name        : %s %s\nYear Built        : %d\nMonthly Rental    : %.2f\nOwner E-Mail      : %s\nAccommodation Type: %d\nBedroom Count     : %d\nPets Allowed?     : %d\nAvg Stay          : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
 					return;
 				}
 				else {
@@ -264,7 +264,7 @@ void accommodationEdit() {
 
 			if (matchFound == true) {
 				printf("\n\033[1;96m!\033[0m Match found! Displaying:\n");
-				printf("\nProperty ID      : %d\nOwner Name       : %s %s\nYear Built       : %d\nMonthly Rental   : %.2f\nOwner E-Mail     : %s\nAccommodation Type: %d\nBedroom Count    : %d\nPets Allowed?    : %d\nAvg Stay         : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
+				printf("\nProperty ID        : %d\nOwner Name         : %s %s\nYear Built         : %d\nMonthly Rental     : %.2f\nOwner E-Mail       : %s\nAccommodation Type: %d\nBedroom Count      : %d\nPets Allowed?      : %d\nAvg Stay            : %d Day(s)\n", current->propertyID, current->ownerFirstName, current->ownerLastName, current->propertyBuildYear, current->propertyRentalCost, current->ownerEmail, current->accommodationType, current->propertyBedroomCount, current->propertyPetsAllowed, current->propertyAvgStay);
 				printf("\n\n\033[1;96m!\033[0m Now entering edit mode.");
 				accommodationAdd(1);
 				return;
@@ -370,7 +370,7 @@ void accommodationGenStatistics(int saveMode) {
 		}
 
 		while (rentalMin > rentalMax) {
-			printf("\n\nMinimum cannot be greater than maximum.\nWhich would you like to change?\n\n\033[1;96m1\033[0m: Maximum\n\033[1;96m2\033[0m: Minimum");
+			printf("\n\nMinimum cannot be greater than maximum.\nWhich would you like to change?\n\n\033[1;96m1\033[0m: Maximum\n\033[1;96m2\033[0m: Minimum\n\n");
 			scanf("%d", &maxOrMin);
 
 			if (maxOrMin == 1) { // Max selected.
