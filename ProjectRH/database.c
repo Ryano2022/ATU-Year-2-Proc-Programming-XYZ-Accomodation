@@ -233,7 +233,7 @@ void accommodationDisplay(int version, int saveMode) {
 				else {
 					printf("\nNo match, next.");
 					if (current->NEXT == NULL) {
-						printf("No matches in the database.\n");
+						printf("\nNo matches in the database.\n");
 					}
 				}
 				current = current->NEXT;
@@ -272,7 +272,7 @@ void accommodationEdit() {
 			else {
 				printf("\nNo match, next.");
 				if (current->NEXT == NULL) {
-					printf("No matches in the database.\n");
+					printf("\nNo matches in the database.\n");
 				}
 			}
 			current = current->NEXT;
@@ -324,7 +324,7 @@ void accommodationDelete() {
 			else {
 				printf("\nNo match, next.");
 				if (current->NEXT == NULL) {
-					printf("No matches in the database.\n");
+					printf("\nNo matches in the database.\n");
 				}
 			}
 			previous = current;
