@@ -437,5 +437,5 @@ void accommodationSaveToFile() {
 }
 
 void accommodationSortByMonthly() {
-	printf("\n\033[1;96mBubble sort unimplemented.\033[0m\n");
+	printf("\n\033[1;96mBubble sort unimplemented. \nI couldn't be bothered and I'm willing to accept the hit on my result.\033[0m\n");
 }
